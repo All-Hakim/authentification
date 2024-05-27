@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="./style.css">
+    <title>Document</title>
+
+</head>
+<body>
+    <div class="container">
+        <div class="text">
+           Connexion
+        </div>
+        <form id="form" method="post">
+           <div class="form-row">
+              <div class="input-data">
+                 <input id="login" type="text" required>
+                 <div class="underline"></div>
+                 <label for="">Login</label>
+              </div>
+              <div class="input-data">
+                 <input id="mdp" type="text" required>
+                 <div class="underline"></div>
+                 <label for="">Mot de passe</label>
+              </div>
+          </div>
+           
+              <div class="underline"></div>
+
+              <br />
+              <div class="form-row submit-btn">
+                 <div class="input-data">
+                    <div class="inner"></div>
+                    <input type="submit" value="se connecter">
+                 </div>
+              </div>
+              <div class="form-row submit-btn">
+                  <a  href="./inscription.html">s'inscrire</a>
+             </div>
+        </form>
+        </div>
+<script>
+   const form = document.querySelector('#form')
+   form.addEventListener('submit',function(e){
+      e.preventDefault()
+
+
+      const login = document.querySelector('#login').value
+      const mdp = document.querySelector('#mdp').value
+
+      async function inscription(){
+         const response = await fetch('http://localhost:3000/connexion',{
+                     method : "POST",
+                     headers : {"content-type":"application/json"},
+                     body : JSON.stringify({
+                           login : login,
+                           mdp : mdp,                        
+                     })
+                  
+                })
+            if(response.status==200){
+
+               console.log('coucou')
+               window.location.href = 'profil.html?login='+login  ;
+            }else{
+               console.log('erreur');
+               window.location.href = 'error.html'
+            }
+            }
+
+                inscription()
+   })
+</script>
+</body>
+</html>

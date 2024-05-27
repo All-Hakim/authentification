@@ -47,6 +47,27 @@ async function inscription(nom,prenom,login,mdp) {
     await client.close();
 }
 
+async function connexion(user={}){
+    const uri =
+    "mongodb+srv://hakimallouchene:psNVlTpzOIrbpDWv@cluster0.6rmoizf.mongodb.net/";
+
+
+    
+    const client = new MongoClient(uri);
+
+    await client.connect();
+    
+    const dbName = "myDatabase";
+    const collectionName = "users";
+    
+    const database = client.db(dbName);
+    const collection = database.collection(collectionName);
+
+    const r = await collection.find(user).toArray()
+
+    return r
+}
+
 app.post('/inscription',(req,res)=>{
     const nom=req.body.nom
     const prenom=req.body.prenom
@@ -64,9 +85,17 @@ app.post('/inscription',(req,res)=>{
 })
 
 
-
-
-
+app.post('/connexion',async(req,res)=>{
+    const user=req.body
+    const a =await connexion(user)
+    if(a.length>0){
+        res.status(200).json()
+        console.log('bien connecté')
+    }else{
+        res.status(500).json()
+        console.log('Utilisateur introuvable');
+    }
+})
 
 
 app.listen(port, () => {
